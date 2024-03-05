@@ -12,6 +12,12 @@ Setuptools focuses on this most common type of data files and offers three ways
 of specifying which files should be included in your packages, as described in
 the following sections.
 
+The user may want to remove the automatically generated PKG-INFO, \*.egg-info,
+build, and dist folders when modifying the configuration files or doing
+structural changes in the directory/file structure. Failure to do so may result
+in an sdist that contains datafiles which are not in a simultaneously built
+wheel, and which will not be installed even if directly installing the sdist.
+
 include_package_data
 ====================
 
@@ -407,49 +413,6 @@ which enables the ``data`` directory to be identified, and then, we separately s
 files for the root package ``mypkg``, and the namespace package ``data`` under the package
 ``mypkg``.
 
-With ``include_package_data`` the configuration is simpler: you simply need to enable
-scanning of namespace packages in the ``src`` directory and the rest is handled by Setuptools.
-
-.. tab:: pyproject.toml
-
-   .. code-block:: toml
-
-        [tool.setuptools]
-        # ...
-        # By default, include-package-data is true in pyproject.toml, so you do
-        # NOT have to specify this line.
-        include-package-data = true
-
-        [tool.setuptools.packages.find]
-        # scanning for namespace packages is true by default in pyproject.toml, so
-        # you need NOT include the following line.
-        namespaces = true
-        where = ["src"]
-
-.. tab:: setup.cfg
-
-   .. code-block:: ini
-
-        [options]
-        packages = find_namespace:
-        package_dir =
-            = src
-        include_package_data = True
-
-        [options.packages.find]
-        where = src
-
-.. tab:: setup.py
-
-   .. code-block:: python
-
-        from setuptools import setup, find_namespace_packages
-        setup(
-            # ... ,
-            packages=find_namespace_packages(where="src"),
-            package_dir={"": "src"},
-            include_package_data=True,
-        )
 
 Summary
 =======
