@@ -315,6 +315,30 @@ class TestPTHFileWriter:
         pth.add(PRDistribution(location))
         assert not pth.dirty
 
+    def test_add_remove_for_normalized_path(self):
+        """
+        In windows, path is not case sensitive,
+        This is test when the distribution path is cwd and normalized.
+        """
+        if sys.platform.startswith('win'):  # pragma: no cover
+            path_org = 'C:/Location/package'
+        else:
+            path_org = '/Location/package'
+        path_norm = pkg_resources.normalize_path(path_org)
+
+        pth = PthDistributions('test-package', [path_org])
+        dist = PRDistribution(location=path_norm, version='1.0')
+
+        with mock.patch('os.getcwd') as mock_getcwd:
+            mock_getcwd.return_value = path_org
+            assert not pth.dirty
+            pth.add(dist)
+            assert pth.dirty
+
+        assert len(pth.paths) == 1
+        pth.remove(dist)
+        assert len(pth.paths) == 0
+
     def test_many_pth_distributions_merge_together(self, tmpdir):
         """
         If the pth file is modified under the hood, then PthDistribution
