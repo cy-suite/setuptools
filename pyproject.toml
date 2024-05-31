@@ -169,6 +169,7 @@ exclude = [
 	"newsfragments*",
 	"docs",
 	"docs.*",
+	"build*",
 ]
 namespaces = true
 
