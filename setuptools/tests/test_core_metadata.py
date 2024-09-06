@@ -377,6 +377,10 @@ def test_parity_with_metadata_from_pypa_wheel(tmp_path):
     del pkg_info_msg["Requires-Dist"]
     del pkg_info_msg["Provides-Extra"]
 
+    # TODO: Handle lack of PEP 643 implementation in pypa/wheel?
+    del pkg_info_msg["Metadata-Version"]
+    del metadata_msg["Metadata-Version"]
+
     # Compare setuptools PKG-INFO x pypa/wheel METADATA
     assert metadata_msg.as_string() == pkg_info_msg.as_string()
     assert metadata_deps == pkg_info_deps
