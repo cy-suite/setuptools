@@ -404,6 +404,7 @@ class TestPEP643:
                                description
             description = Short description
             keywords = one, two
+            platforms = abcd
             [options]
             install_requires = requests
             """
@@ -420,6 +421,9 @@ class TestPEP643:
             readme = {text = "Long\\ndescription", content-type = "text/plain"}
             keywords = ["one", "two"]
             dependencies = ["requests"]
+            [tool.setuptools]
+            provides = ["abcd"]
+            obsoletes = ["abcd"]
             """
         ),
     }
@@ -439,6 +443,7 @@ class TestPEP643:
             {"requires-python": ("python_requires", ">=3.12")},
             {"author-email": ("author_email", "snoopy@peanuts.com")},
             {"keywords": ("keywords", ["hello", "world"])},
+            {"platform": ("platforms", ["abcd"])},
             # Multiple dynamic fields
             {
                 "summary": ("description", "hello world"),
