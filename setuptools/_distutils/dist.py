@@ -1052,7 +1052,6 @@ class DistributionMetadata:
             self.maintainer_email = None
             self.url = None
             self.license = None
-            self.license_expression = None
             self.description = None
             self.long_description = None
             self.keywords = None
@@ -1090,7 +1089,6 @@ class DistributionMetadata:
         self.maintainer_email = None
         self.url = _read_field('home-page')
         self.license = _read_field('license')
-        self.license_expression = _read_field('license-expression')
 
         if 'download-url' in msg:
             self.download_url = _read_field('download-url')
@@ -1222,11 +1220,6 @@ class DistributionMetadata:
         return self.license
 
     get_licence = get_license
-
-    def get_license_expression(self):
-        return self.license_expression
-
-    get_license_expression = get_license_expression
 
     def get_description(self):
         return self.description
