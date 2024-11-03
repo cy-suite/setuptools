@@ -815,6 +815,22 @@ class TestEggInfo:
                 [],
                 id="files_only_added_once",
             ),
+            pytest.param(
+                {
+                    'setup.cfg': DALS(
+                        """
+                              [metadata]
+                              license_files = **/LICENSE
+                              """
+                    ),
+                    'LICENSE': "ABC license",
+                    'LICENSE-OTHER': "Don't include",
+                    'vendor': {'LICENSE': "Vendor license"},
+                },
+                ['LICENSE', 'vendor/LICENSE'],
+                ['LICENSE-OTHER'],
+                id="recursive_glob",
+            ),
         ],
     )
     def test_setup_cfg_license_files(

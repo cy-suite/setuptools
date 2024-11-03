@@ -629,9 +629,11 @@ class bdist_wheel(Command):
         with open(pkg_info_path, "w", encoding="utf-8") as out:
             Generator(out, policy=serialization_policy).flatten(pkg_info)
 
+        licenses_folder_path = os.path.join(distinfo_path, "licenses")
         for license_path in self.license_paths:
-            filename = os.path.basename(license_path)
-            shutil.copy(license_path, os.path.join(distinfo_path, filename))
+            dist_info_license_path = os.path.join(licenses_folder_path, license_path)
+            os.makedirs(os.path.dirname(dist_info_license_path), exist_ok=True)
+            shutil.copy(license_path, dist_info_license_path)
 
         adios(egginfo_path)
 
