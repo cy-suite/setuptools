@@ -164,12 +164,15 @@ class _TroveClassifier:
     """
 
     downloaded: typing.Union[None, "Literal[False]", typing.Set[str]]
+    """
+    None => not cached yet
+    False => unavailable
+    set => cached values
+    """
 
     def __init__(self) -> None:
         self.downloaded = None
         self._skip_download = False
-        # None => not cached yet
-        # False => cache not available
         self.__name__ = "trove_classifier"  # Emulate a public function
 
     def _disable_download(self) -> None:
@@ -351,7 +354,7 @@ def python_entrypoint_reference(value: str) -> bool:
         obj = rest
 
     module_parts = module.split(".")
-    identifiers = _chain(module_parts, obj.split(".")) if rest else module_parts
+    identifiers = _chain(module_parts, obj.split(".")) if rest else iter(module_parts)
     return all(python_identifier(i.strip()) for i in identifiers)
 
 
@@ -373,3 +376,9 @@ def uint(value: builtins.int) -> bool:
 def int(value: builtins.int) -> bool:
     r"""Signed 64-bit integer (:math:`-2^{63} \leq x < 2^{63}`)"""
     return -(2**63) <= value < 2**63
+
+
+def SPDX(value: str) -> bool:
+    """Should validate eventually"""
+    # TODO: validate conditional to the presence of (the right version) of packaging
+    return True
