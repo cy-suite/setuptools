@@ -427,7 +427,7 @@ class Distribution(_Distribution):
         return (
             path
             for pattern in patterns
-            for path in sorted(iglob(pattern))
+            for path in sorted(iglob(pattern, recursive=True))
             if not path.endswith('~') and os.path.isfile(path)
         )
 
